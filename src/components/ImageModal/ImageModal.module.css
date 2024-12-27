@@ -1,0 +1,24 @@
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 40px;
+}
+
+.ImageModal {
+  border-radius: 14px;
+  min-width: 120vh;
+  height: 80vh;
+  object-fit: cover;
+  object-position: center;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(1, 119, 119, 0.863);
+}

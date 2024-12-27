@@ -1,0 +1,14 @@
+.loadMoreBtn {
+  border: 1px solid blue;
+  border-radius: 10px;
+  transition: background-color 0.4s;
+  &:hover {
+    background-color: rgb(52, 157, 255);
+  }
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
