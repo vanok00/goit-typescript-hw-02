@@ -7,7 +7,7 @@ export interface Image {
   user: {
     name: string;
   };
-  alt_description?: string;
+  alt_description?: string | null;
 }
 
 export interface FetchImagesResponse {

@@ -15,7 +15,6 @@ const App: React.FC = () => {
   const [isError, setIsError] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
   const [query, setQuery] = useState<string>("");
-  const [setIsOpen] = useState<boolean>(false);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [selectedImage, setSelectedImage] = useState<Image | null>(null);
 
@@ -33,7 +32,11 @@ const App: React.FC = () => {
             duration: 3000,
           });
         }
-        setImages((prev) => [...prev, ...data.results]);
+        const transformedImages = data.results.map((image) => ({
+          ...image,
+          alt_description: image.alt_description ?? undefined,
+        }));
+        setImages((prev) => [...prev, ...transformedImages]);
         setTotalPages(data.total_pages);
       } catch {
         setIsError(true);
@@ -57,8 +60,9 @@ const App: React.FC = () => {
   };
 
   const closeModal = () => {
-    setIsOpen(null);
+    setSelectedImage(null);
   };
+
   const handleOpenImage = (image: Image) => {
     setSelectedImage(image);
   };
