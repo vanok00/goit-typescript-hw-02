@@ -1,24 +1,16 @@
+import { Image, handleOpenImage } from "../App/App.types";
 import styles from "./ImageGallery.module.css";
 import ImageCard from "../ImageCard/ImageCard";
 
-interface Image {
-  id: string;
-  urls: {
-    small: string;
-    regular: string;
-  };
-  alt_description?: string;
-}
-
-interface ImageGalleryProps {
+export interface ImageGalleryProps {
   images: Image[];
-  handleOpenImage: (src: string, alt: string) => void;
+  handleOpenImage: handleOpenImage;
 }
 
-const ImageGallery: React.FC<ImageGalleryProps> = ({
+export default function ImageGallery({
   images,
   handleOpenImage,
-}) => {
+}: ImageGalleryProps) {
   return (
     <ul className={styles.imageContainer}>
       {images.map((image) => (
@@ -28,6 +20,4 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
       ))}
     </ul>
   );
-};
-
-export default ImageGallery;
+}

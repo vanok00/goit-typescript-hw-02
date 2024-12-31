@@ -1,27 +1,14 @@
-interface Image {
-  id: string;
-  urls: {
-    small: string;
-    regular: string;
-  };
-  alt_description?: string;
-}
+import { Image, handleOpenImage } from "../App/App.types";
 
-interface ImageCardProps {
+export interface ImageCardProps {
   image: Image;
-  handleOpenImage: (src: string, alt: string) => void;
+  handleOpenImage: handleOpenImage;
 }
 
-const ImageCard: React.FC<ImageCardProps> = ({ image, handleOpenImage }) => {
+export default function ImageCard({ image, handleOpenImage }: ImageCardProps) {
   return (
-    <div
-      onClick={() =>
-        handleOpenImage(image.urls.regular, image.alt_description || "Image")
-      }
-    >
+    <div onClick={() => handleOpenImage(image)}>
       <img src={image.urls.small} alt={image.alt_description || "Image"} />
     </div>
   );
-};
-
-export default ImageCard;
+}

@@ -7,20 +7,7 @@ import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
 import SearchBar from "../SearchBar/SearchBar";
 import ImageModal from "../ImageModal/ImageModal";
 import toast from "react-hot-toast";
-
-interface Image {
-  id: string;
-  urls: {
-    small: string;
-    regular: string;
-  };
-  alt_description?: string;
-}
-
-interface FetchArticlesResponse {
-  results: Image[];
-  total_pages: number;
-}
+import { Image } from "./App.types";
 
 const App: React.FC = () => {
   const [images, setImages] = useState<Image[]>([]);
@@ -28,10 +15,9 @@ const App: React.FC = () => {
   const [isError, setIsError] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
   const [query, setQuery] = useState<string>("");
-  const [modalIsOpen, setIsOpen] = useState<boolean>(false);
-  const [modalImage, setModalImage] = useState<string>("");
-  const [alt, setAlt] = useState<string>("");
+  const [setIsOpen] = useState<boolean>(false);
   const [totalPages, setTotalPages] = useState<number>(0);
+  const [selectedImage, setSelectedImage] = useState<Image | null>(null);
 
   useEffect(() => {
     if (!query) return;
@@ -40,13 +26,12 @@ const App: React.FC = () => {
       try {
         setIsError(false);
         setIsLoading(true);
-        const data: FetchArticlesResponse = await fetchArticles(page, query);
+        const data = await fetchArticles(page, query);
         if (data.results.length === 0) {
           toast.error("Sorry, there are no images found for your search!", {
             position: "top-right",
             duration: 3000,
           });
-          return;
         }
         setImages((prev) => [...prev, ...data.results]);
         setTotalPages(data.total_pages);
@@ -64,19 +49,18 @@ const App: React.FC = () => {
     setPage((prev) => prev + 1);
   };
 
-  const handleSetQuery = (searchValue: string): void => {
+  const handleSetQuery = (searchValue: string) => {
+    if (searchValue === query) return;
     setQuery(searchValue);
     setImages([]);
     setPage(1);
   };
 
   const closeModal = () => {
-    setIsOpen(false);
+    setIsOpen(null);
   };
-  const handleOpenImage = (src: string, alt: string): void => {
-    setModalImage(src);
-    setAlt(alt);
-    setIsOpen(true);
+  const handleOpenImage = (image: Image) => {
+    setSelectedImage(image);
   };
 
   return (
@@ -90,12 +74,9 @@ const App: React.FC = () => {
       {images.length > 0 && !isLoading && !isError && page < totalPages && (
         <LoadMoreBtn onClick={handleLoadMore} />
       )}
-      <ImageModal
-        openModal={modalIsOpen}
-        closeModal={closeModal}
-        src={modalImage}
-        alt={alt}
-      />
+      {selectedImage && (
+        <ImageModal image={selectedImage} closeModal={closeModal} />
+      )}
     </>
   );
 };
